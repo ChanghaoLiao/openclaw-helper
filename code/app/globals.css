@@ -1,0 +1,471 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --crystal-base: #f8f9fa;
+  --cosmic-orange: #d4a853;
+  --cosmic-glow: #e8c97a;
+  --burgundy: #e11d48;
+  --glass-bg: rgba(255, 255, 255, 0.65);
+  --glass-border: rgba(255, 255, 255, 0.5);
+}
+
+body {
+  /* Cloud Dancer Base - 水晶基底 + 微妙纹理 */
+  background:
+    radial-gradient(ellipse at 20% 50%, rgba(212, 168, 83, 0.04) 0%, transparent 50%),
+    radial-gradient(ellipse at 80% 20%, rgba(126, 200, 227, 0.04) 0%, transparent 50%),
+    radial-gradient(ellipse at 50% 80%, rgba(167, 139, 250, 0.03) 0%, transparent 50%),
+    linear-gradient(145deg, #f8f9fa 0%, #e9eaeb 30%, #f3f4f5 60%, #f8f9fa 100%);
+  color: #1a1a2e;
+  min-height: 100vh;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+}
+
+/* ============================================
+   水晶质感基础层
+   ============================================ */
+.crystal-base {
+  background: linear-gradient(135deg,
+    rgba(248, 249, 250, 0.95) 0%,
+    rgba(243, 244, 245, 0.9) 50%,
+    rgba(248, 249, 250, 0.95) 100%);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+}
+
+/* 噪点纹理叠加（给水晶增加质感深度） */
+.crystal-noise::after {
+  content: '';
+  position: fixed;
+  inset: 0;
+  opacity: 0.015;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
+  pointer-events: none;
+  z-index: 1;
+}
+
+/* ============================================
+   动态虹彩效果
+   ============================================ */
+.iridescent {
+  position: relative;
+  overflow: hidden;
+}
+
+.iridescent::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(135deg,
+    rgba(196, 153, 92, 0.12) 0%,
+    rgba(126, 200, 227, 0.08) 20%,
+    rgba(180, 190, 220, 0.15) 40%,
+    rgba(212, 168, 83, 0.12) 60%,
+    rgba(167, 139, 250, 0.08) 80%,
+    rgba(196, 153, 92, 0.12) 100%);
+  background-size: 400% 400%;
+  animation: iridescent-shift 10s ease-in-out infinite;
+  pointer-events: none;
+  mix-blend-mode: soft-light;
+}
+
+@keyframes iridescent-shift {
+  0%, 100% { background-position: 0% 50%; }
+  25% { background-position: 100% 0%; }
+  50% { background-position: 100% 100%; }
+  75% { background-position: 0% 100%; }
+}
+
+/* ============================================
+   玻璃薄片 - Z-axis Stacking
+   ============================================ */
+.glass-panel {
+  background: var(--glass-bg);
+  backdrop-filter: blur(20px) saturate(1.2);
+  -webkit-backdrop-filter: blur(20px) saturate(1.2);
+  border: 1px solid var(--glass-border);
+  box-shadow:
+    0 4px 24px rgba(0, 0, 0, 0.06),
+    0 1px 2px rgba(0, 0, 0, 0.04),
+    inset 0 1px 0 rgba(255, 255, 255, 0.8),
+    inset 0 -1px 0 rgba(0, 0, 0, 0.02);
+  transform: translateZ(0);
+  transition: all 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.glass-panel:hover {
+  background: rgba(255, 255, 255, 0.78);
+  border-color: rgba(255, 255, 255, 0.65);
+  box-shadow:
+    0 8px 40px rgba(0, 0, 0, 0.09),
+    0 2px 8px rgba(0, 0, 0, 0.05),
+    0 0 0 1px rgba(255, 255, 255, 0.3),
+    inset 0 1px 0 rgba(255, 255, 255, 0.9);
+  transform: translateY(-3px) translateZ(10px);
+}
+
+/* 卡片内的微光扫过效果 */
+.glass-panel-shimmer {
+  position: relative;
+  overflow: hidden;
+}
+
+.glass-panel-shimmer::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 60%;
+  height: 100%;
+  background: linear-gradient(90deg,
+    transparent 0%,
+    rgba(255, 255, 255, 0.3) 50%,
+    transparent 100%);
+  transition: left 0.6s ease;
+  pointer-events: none;
+}
+
+.glass-panel-shimmer:hover::after {
+  left: 150%;
+}
+
+/* ============================================
+   宇宙橙微光 - AI 思考状态
+   ============================================ */
+.cosmic-glow {
+  position: relative;
+  box-shadow:
+    0 0 20px rgba(212, 168, 83, 0.2),
+    0 0 60px rgba(212, 168, 83, 0.05);
+}
+
+.cosmic-glow::after {
+  content: '';
+  position: absolute;
+  inset: -2px;
+  border-radius: inherit;
+  background: radial-gradient(circle at center,
+    rgba(212, 168, 83, 0.12) 0%,
+    transparent 70%);
+  animation: glow-pulse 3s ease-in-out infinite;
+  pointer-events: none;
+  z-index: -1;
+}
+
+/* 脉冲光环 - 当前步骤指示 */
+.pulse-ring {
+  position: relative;
+}
+
+.pulse-ring::before {
+  content: '';
+  position: absolute;
+  inset: -4px;
+  border-radius: inherit;
+  border: 2px solid rgba(212, 168, 83, 0.3);
+  animation: pulse-ring-expand 2s ease-out infinite;
+  pointer-events: none;
+}
+
+@keyframes pulse-ring-expand {
+  0% { transform: scale(1); opacity: 0.4; }
+  100% { transform: scale(1.15); opacity: 0; }
+}
+
+/* ============================================
+   勃艮第红 - 警告状态
+   ============================================ */
+.burgundy-accent {
+  color: #e11d48;
+  border-color: rgba(225, 29, 72, 0.3);
+}
+
+.burgundy-accent::before {
+  background: linear-gradient(135deg,
+    rgba(225, 29, 72, 0.1) 0%,
+    transparent 50%);
+}
+
+/* ============================================
+   浮动动画
+   ============================================ */
+.float-up {
+  animation: float 6s ease-in-out infinite;
+}
+
+/* ============================================
+   透明度梯度消散
+   ============================================ */
+.fade-dissolve {
+  mask-image: linear-gradient(to bottom,
+    black 60%,
+    transparent 100%);
+  -webkit-mask-image: linear-gradient(to bottom,
+    black 60%,
+    transparent 100%);
+}
+
+/* ============================================
+   按钮系统
+   ============================================ */
+
+/* 水晶按钮 - 基础 */
+.btn-crystal {
+  position: relative;
+  background: linear-gradient(135deg,
+    rgba(255, 255, 255, 0.92) 0%,
+    rgba(248, 249, 250, 0.85) 100%);
+  backdrop-filter: blur(8px);
+  border: 1px solid rgba(255, 255, 255, 0.6);
+  box-shadow:
+    0 2px 8px rgba(0, 0, 0, 0.06),
+    0 1px 2px rgba(0, 0, 0, 0.04),
+    inset 0 1px 0 rgba(255, 255, 255, 0.8);
+  transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+  overflow: hidden;
+}
+
+.btn-crystal::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg,
+    transparent 0%,
+    rgba(255, 255, 255, 0.4) 50%,
+    transparent 100%);
+  transition: left 0.5s ease;
+  pointer-events: none;
+}
+
+.btn-crystal:hover {
+  background: linear-gradient(135deg,
+    rgba(255, 255, 255, 1) 0%,
+    rgba(243, 244, 245, 0.95) 100%);
+  box-shadow:
+    0 4px 16px rgba(0, 0, 0, 0.1),
+    0 0 24px rgba(212, 168, 83, 0.12),
+    inset 0 1px 0 rgba(255, 255, 255, 0.9);
+  transform: translateY(-1px);
+}
+
+.btn-crystal:hover::before {
+  left: 100%;
+}
+
+.btn-crystal:active {
+  transform: translateY(0px) scale(0.98);
+}
+
+/* 主要操作按钮 - 深色 */
+.btn-primary {
+  position: relative;
+  background: linear-gradient(135deg, #2d2d3f 0%, #1a1a2e 100%);
+  color: white;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  box-shadow:
+    0 4px 16px rgba(0, 0, 0, 0.2),
+    0 0 0 1px rgba(255, 255, 255, 0.05),
+    inset 0 1px 0 rgba(255, 255, 255, 0.1);
+  transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+  overflow: hidden;
+}
+
+.btn-primary:hover {
+  background: linear-gradient(135deg, #3d3d52 0%, #2a2a3e 100%);
+  box-shadow:
+    0 6px 24px rgba(0, 0, 0, 0.25),
+    0 0 30px rgba(212, 168, 83, 0.15),
+    inset 0 1px 0 rgba(255, 255, 255, 0.15);
+  transform: translateY(-2px);
+}
+
+.btn-primary:active {
+  transform: translateY(0px) scale(0.98);
+}
+
+/* ============================================
+   进度条
+   ============================================ */
+.progress-bar-segment {
+  transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.progress-bar-active {
+  background: linear-gradient(90deg, var(--cosmic-glow), var(--cosmic-orange));
+  animation: progress-glow 2s ease-in-out infinite;
+}
+
+@keyframes progress-glow {
+  0%, 100% { box-shadow: 0 0 6px rgba(212, 168, 83, 0.3); }
+  50% { box-shadow: 0 0 16px rgba(212, 168, 83, 0.5); }
+}
+
+.progress-bar-done {
+  background: linear-gradient(90deg, var(--cosmic-glow), var(--cosmic-orange));
+}
+
+/* ============================================
+   步骤卡片
+   ============================================ */
+.step-card {
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.step-card-current {
+  border-color: rgba(212, 168, 83, 0.3);
+  box-shadow:
+    0 4px 24px rgba(0, 0, 0, 0.06),
+    0 0 30px rgba(212, 168, 83, 0.08);
+}
+
+.step-card-completed {
+  border-color: rgba(212, 168, 83, 0.2);
+  background: rgba(255, 255, 255, 0.55);
+}
+
+.step-card-locked {
+  opacity: 0.35;
+  filter: grayscale(0.2);
+}
+
+/* 步骤编号徽章 */
+.step-badge {
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.step-badge-done {
+  background: linear-gradient(135deg, var(--cosmic-orange), var(--cosmic-glow));
+  box-shadow: 0 2px 8px rgba(212, 168, 83, 0.3);
+}
+
+.step-badge-current {
+  background: linear-gradient(135deg, #2d2d3f, #1a1a2e);
+  box-shadow: 0 2px 8px rgba(26, 26, 46, 0.3);
+}
+
+/* ============================================
+   代码块
+   ============================================ */
+.code-block {
+  background: rgba(26, 26, 46, 0.04);
+  border: 1px solid rgba(26, 26, 46, 0.06);
+  backdrop-filter: blur(4px);
+}
+
+.code-block-verify {
+  background: rgba(212, 168, 83, 0.06);
+  border: 1px solid rgba(212, 168, 83, 0.12);
+}
+
+/* ============================================
+   文字效果
+   ============================================ */
+.text-iridescent {
+  background: linear-gradient(135deg,
+    #1a1a2e 0%,
+    #4a4a6a 40%,
+    #c4995c 60%,
+    #1a1a2e 100%);
+  background-size: 300% 300%;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  animation: text-shimmer 6s ease-in-out infinite;
+}
+
+@keyframes text-shimmer {
+  0%, 100% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+}
+
+/* 副标题的柔和渐变 */
+.text-soft-gradient {
+  background: linear-gradient(135deg, #6b6c6e 0%, #8e8f91 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+/* ============================================
+   完成庆祝效果
+   ============================================ */
+.celebration-card {
+  background: linear-gradient(135deg,
+    rgba(255, 255, 255, 0.8) 0%,
+    rgba(250, 240, 216, 0.5) 50%,
+    rgba(255, 255, 255, 0.8) 100%);
+  border: 1px solid rgba(212, 168, 83, 0.25);
+  box-shadow:
+    0 8px 40px rgba(212, 168, 83, 0.12),
+    0 0 80px rgba(212, 168, 83, 0.05),
+    inset 0 1px 0 rgba(255, 255, 255, 0.8);
+}
+
+/* ============================================
+   选择卡片 - 图标背景光
+   ============================================ */
+.icon-glow {
+  position: relative;
+}
+
+.icon-glow::before {
+  content: '';
+  position: absolute;
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  background: radial-gradient(circle,
+    rgba(212, 168, 83, 0.15) 0%,
+    transparent 70%);
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  pointer-events: none;
+  transition: all 0.3s ease;
+}
+
+.icon-glow:hover::before {
+  width: 80px;
+  height: 80px;
+  background: radial-gradient(circle,
+    rgba(212, 168, 83, 0.25) 0%,
+    transparent 70%);
+}
+
+/* ============================================
+   动画延迟辅助
+   ============================================ */
+.delay-100 { animation-delay: 0.1s; }
+.delay-200 { animation-delay: 0.2s; }
+.delay-300 { animation-delay: 0.3s; }
+.delay-400 { animation-delay: 0.4s; }
+
+/* 填充模式 - 保持动画结束状态 */
+.fill-both {
+  animation-fill-mode: both;
+}
+
+/* ============================================
+   滚动条美化
+   ============================================ */
+::-webkit-scrollbar {
+  width: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background: rgba(0, 0, 0, 0.12);
+  border-radius: 3px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(0, 0, 0, 0.2);
+}
